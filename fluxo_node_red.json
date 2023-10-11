@@ -1,0 +1,780 @@
+[
+    {
+        "id": "7e8cc60fa82515b2",
+        "type": "tab",
+        "label": "Irrigação",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "2055d00ce6c04295",
+        "type": "http request",
+        "z": "7e8cc60fa82515b2",
+        "name": "/umidade",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "192.100.41.82:8080/umidade",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 450,
+        "y": 320,
+        "wires": [
+            [
+                "f476433f5210f4e2"
+            ]
+        ]
+    },
+    {
+        "id": "4d261dc5684bc4c0",
+        "type": "inject",
+        "z": "7e8cc60fa82515b2",
+        "name": "Início da irrigação - manhã",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "*/1 6 * * *",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "deu certo",
+        "payloadType": "str",
+        "x": 180,
+        "y": 280,
+        "wires": [
+            [
+                "2055d00ce6c04295"
+            ]
+        ]
+    },
+    {
+        "id": "115669041bc5fd77",
+        "type": "debug",
+        "z": "7e8cc60fa82515b2",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 960,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "2b3adc2ffdfc6c88",
+        "type": "inject",
+        "z": "7e8cc60fa82515b2",
+        "name": "Início da irrigação - tarde",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "*/1 17 * * *",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "deu certo",
+        "payloadType": "str",
+        "x": 170,
+        "y": 340,
+        "wires": [
+            [
+                "2055d00ce6c04295"
+            ]
+        ]
+    },
+    {
+        "id": "f476433f5210f4e2",
+        "type": "switch",
+        "z": "7e8cc60fa82515b2",
+        "name": "Verifica umidade",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gte",
+                "v": "50",
+                "vt": "str"
+            },
+            {
+                "t": "lt",
+                "v": "50",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 650,
+        "y": 320,
+        "wires": [
+            [
+                "115669041bc5fd77",
+                "a7c2334fedcdaf6b"
+            ],
+            [
+                "9d09ec39166ea548",
+                "3104e6c6ab6291bd"
+            ]
+        ]
+    },
+    {
+        "id": "cf4ff92e556332eb",
+        "type": "http request",
+        "z": "7e8cc60fa82515b2",
+        "name": "/ligar_bomba",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://192.100.41.82:8080/ligar_bomba",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 430,
+        "y": 520,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c57fb05efd9536fb",
+        "type": "ui_button",
+        "z": "7e8cc60fa82515b2",
+        "name": "",
+        "group": "f529ac8fc418df14",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Irrigar FICiências!",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 130,
+        "y": 520,
+        "wires": [
+            [
+                "cf4ff92e556332eb",
+                "6b91a678d5b77dac"
+            ]
+        ]
+    },
+    {
+        "id": "d8e9451da5b9ad5c",
+        "type": "ui_text",
+        "z": "7e8cc60fa82515b2",
+        "group": "38a0484f41f94bdd",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 650,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "6b91a678d5b77dac",
+        "type": "function",
+        "z": "7e8cc60fa82515b2",
+        "name": "function 1",
+        "func": "msg.payload=\"A irrigação será inicializada\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 580,
+        "wires": [
+            [
+                "d8e9451da5b9ad5c",
+                "9a6d524b99ed9c76"
+            ]
+        ]
+    },
+    {
+        "id": "9a6d524b99ed9c76",
+        "type": "ui_audio",
+        "z": "7e8cc60fa82515b2",
+        "name": "",
+        "group": "38a0484f41f94bdd",
+        "voice": "Google português do Brasil",
+        "always": true,
+        "x": 660,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "350a5aae8504bae9",
+        "type": "ui_chart",
+        "z": "7e8cc60fa82515b2",
+        "name": "",
+        "group": "38a0484f41f94bdd",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "label": "chart",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "5",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1010,
+        "y": 960,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "70d6fdf27bf4392f",
+        "type": "function",
+        "z": "7e8cc60fa82515b2",
+        "name": "Converte String da resposta para Inteiro",
+        "func": "msg.payload = parseInt(msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 960,
+        "wires": [
+            [
+                "350a5aae8504bae9",
+                "b6f085b17e65cb66"
+            ]
+        ]
+    },
+    {
+        "id": "20f608305d6a35e0",
+        "type": "inject",
+        "z": "7e8cc60fa82515b2",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "*/1 0-23 * * *",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 160,
+        "y": 960,
+        "wires": [
+            [
+                "7abe712cc3509bea",
+                "997d9fd7f23ffd45"
+            ]
+        ]
+    },
+    {
+        "id": "7abe712cc3509bea",
+        "type": "http request",
+        "z": "7e8cc60fa82515b2",
+        "name": "/umidade",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "192.100.41.82:8080/umidade",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 380,
+        "y": 960,
+        "wires": [
+            [
+                "70d6fdf27bf4392f"
+            ]
+        ]
+    },
+    {
+        "id": "b6f085b17e65cb66",
+        "type": "ui_gauge",
+        "z": "7e8cc60fa82515b2",
+        "name": "",
+        "group": "f529ac8fc418df14",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "gtype": "wave",
+        "title": "Umidade atual",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 1040,
+        "y": 1020,
+        "wires": []
+    },
+    {
+        "id": "8a52956a774a65a4",
+        "type": "ui_text",
+        "z": "7e8cc60fa82515b2",
+        "group": "0648f5ddf81b35e3",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Horário manhã",
+        "format": "{{msg.horarioManha}}",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 700,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "997d9fd7f23ffd45",
+        "type": "function",
+        "z": "7e8cc60fa82515b2",
+        "name": "Define horários de Irrigação",
+        "func": "msg.horarioManha=\"06:00 às 07:00\";\nmsg.horarioTarde=\"17:00 às 18:00\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 1040,
+        "wires": [
+            [
+                "8a52956a774a65a4",
+                "046c73554d6fc1dd"
+            ]
+        ]
+    },
+    {
+        "id": "046c73554d6fc1dd",
+        "type": "ui_text",
+        "z": "7e8cc60fa82515b2",
+        "group": "0648f5ddf81b35e3",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Horário tarde:",
+        "format": "{{msg.horarioTarde}}",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 700,
+        "y": 1100,
+        "wires": []
+    },
+    {
+        "id": "197f46ecac266f62",
+        "type": "ui_audio",
+        "z": "7e8cc60fa82515b2",
+        "name": "",
+        "group": "38a0484f41f94bdd",
+        "voice": "Google português do Brasil",
+        "always": true,
+        "x": 1140,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "a7c2334fedcdaf6b",
+        "type": "function",
+        "z": "7e8cc60fa82515b2",
+        "name": "Prepara mensagem",
+        "func": "msg.payload = \"A umidade \"+msg.payload+\" já está de acordo com o necessário. Não é necessário irrigar!\"\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 950,
+        "y": 280,
+        "wires": [
+            [
+                "197f46ecac266f62"
+            ]
+        ]
+    },
+    {
+        "id": "42698ac5fc65178f",
+        "type": "ui_button",
+        "z": "7e8cc60fa82515b2",
+        "name": "",
+        "group": "f529ac8fc418df14",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Irrigar com verificação",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 140,
+        "y": 180,
+        "wires": [
+            [
+                "2055d00ce6c04295"
+            ]
+        ]
+    },
+    {
+        "id": "9d09ec39166ea548",
+        "type": "http request",
+        "z": "7e8cc60fa82515b2",
+        "name": "/ligar_bomba",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://192.100.41.82:8080/ligar_bomba",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 910,
+        "y": 400,
+        "wires": [
+            [
+                "da06b49c901ebb53"
+            ]
+        ]
+    },
+    {
+        "id": "da06b49c901ebb53",
+        "type": "delay",
+        "z": "7e8cc60fa82515b2",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "10",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 1090,
+        "y": 400,
+        "wires": [
+            [
+                "babe3c88ea13df3f"
+            ]
+        ]
+    },
+    {
+        "id": "babe3c88ea13df3f",
+        "type": "http request",
+        "z": "7e8cc60fa82515b2",
+        "name": "/desligar_bomba",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://192.100.41.82:8080/desligar_bomba",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1290,
+        "y": 400,
+        "wires": [
+            [
+                "2055d00ce6c04295"
+            ]
+        ]
+    },
+    {
+        "id": "3104e6c6ab6291bd",
+        "type": "function",
+        "z": "7e8cc60fa82515b2",
+        "name": "Prepara mensagem",
+        "func": "msg.payload = \"A umidade \"+msg.payload+\"% está abaixo do desejado. Irrigando!\"\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 930,
+        "y": 460,
+        "wires": [
+            [
+                "3c6c198746bad37b",
+                "7c72ca7267ed247f"
+            ]
+        ]
+    },
+    {
+        "id": "3c6c198746bad37b",
+        "type": "ui_audio",
+        "z": "7e8cc60fa82515b2",
+        "name": "",
+        "group": "38a0484f41f94bdd",
+        "voice": "Google português do Brasil",
+        "always": true,
+        "x": 1140,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "7c72ca7267ed247f",
+        "type": "debug",
+        "z": "7e8cc60fa82515b2",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1140,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "6ec90170d995f83a",
+        "type": "http request",
+        "z": "7e8cc60fa82515b2",
+        "name": "/desligar_bomba",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://192.100.41.82:8080/desligar_bomba",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 450,
+        "y": 680,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6b1f3299b0f3d4ad",
+        "type": "ui_button",
+        "z": "7e8cc60fa82515b2",
+        "name": "",
+        "group": "f529ac8fc418df14",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Desligar Irrigação FICiências!",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 170,
+        "y": 680,
+        "wires": [
+            [
+                "6ec90170d995f83a",
+                "4138371f035ff9d1"
+            ]
+        ]
+    },
+    {
+        "id": "5986bac2891d9d60",
+        "type": "ui_text",
+        "z": "7e8cc60fa82515b2",
+        "group": "38a0484f41f94bdd",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 650,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "4138371f035ff9d1",
+        "type": "function",
+        "z": "7e8cc60fa82515b2",
+        "name": "function 4",
+        "func": "msg.payload=\"A irrigação será inicializada\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 740,
+        "wires": [
+            [
+                "5986bac2891d9d60",
+                "f42b7ed499c9f7e6"
+            ]
+        ]
+    },
+    {
+        "id": "f42b7ed499c9f7e6",
+        "type": "ui_audio",
+        "z": "7e8cc60fa82515b2",
+        "name": "",
+        "group": "38a0484f41f94bdd",
+        "voice": "Google português do Brasil",
+        "always": true,
+        "x": 660,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "f529ac8fc418df14",
+        "type": "ui_group",
+        "name": "",
+        "tab": "3207cdf3ef185cdb",
+        "order": 2,
+        "disp": true,
+        "width": "10",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "38a0484f41f94bdd",
+        "type": "ui_group",
+        "name": "Umidade pelo tempo",
+        "tab": "3207cdf3ef185cdb",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "0648f5ddf81b35e3",
+        "type": "ui_group",
+        "name": "Horários",
+        "tab": "3207cdf3ef185cdb",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "3207cdf3ef185cdb",
+        "type": "ui_tab",
+        "name": "Sistema de irrigação",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
